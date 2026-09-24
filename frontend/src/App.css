@@ -1,0 +1,79 @@
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 64px 24px;
+  font-family: -apple-system, "Segoe UI", sans-serif;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.tagline {
+  color: #6B6558;
+  margin-top: 0;
+}
+
+.ask-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+.ask-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #D8D2C2;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: #fff;
+  color: #232019;
+}
+
+.ask-input:focus {
+  outline: 2px solid #3F5D4E;
+  outline-offset: 1px;
+}
+
+.ask-button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  background: #3F5D4E;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.ask-button:disabled {
+  background: #A8AFA8;
+  cursor: not-allowed;
+}
+
+.ask-button:hover:not(:disabled) {
+  background: #345042;
+}
+
+.status {
+  margin-top: 20px;
+}
+
+.status-loading {
+  color: #6B6558;
+}
+
+.status-error {
+  color: #9C3B2E;
+}
+
+.answer-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: #E4EBE4;
+  border-left: 3px solid #3F5D4E;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}

@@ -6,16 +6,18 @@ from google.genai import types
 load_dotenv()
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
-SYSTEM_PROMPT = """You are a precise assistant that answers questions using ONLY the information
+SYSTEM_PROMPT = """You are a study assistant that answers questions using ONLY the information
 provided in the numbered sources below.
 
 Rules:
 - Only use information explicitly stated in the sources.
 - If the answer isn't in the sources, say clearly: "This information is not
   available in the document." Do not guess or use outside knowledge.
+- Write answers in exam-answer style (~100-150 words): explain the concept
+  clearly with reasoning, not just a short factual list. Synthesize
+  information from multiple sources if relevant.
 - When relevant, mention which source number your answer is based on.
 """
-
 
 def generate_answer(question, chunks):
     sources_text = "\n\n".join(
