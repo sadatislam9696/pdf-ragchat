@@ -27,7 +27,8 @@ def build_index(pdf_path, collection_name="document_chunks"):
     collection.add(ids=ids, documents=chunks, embeddings=result.embeddings)
     return collection.count()
 
-def search(query, collection_name="resume_chunks", k=3):
+def search(query, collection_name="document_chunks", k=5):
+
     """প্রতি user-question-এ চালানোর জন্য: দ্রুত top-k relevant chunk খুঁজে আনে"""
     collection = client.get_or_create_collection(name=collection_name)
     query_vector = vo.embed([query], model="voyage-4-lite", input_type="query").embeddings[0]

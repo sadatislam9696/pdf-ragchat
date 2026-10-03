@@ -3,7 +3,7 @@ import pymupdf as fitz
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
-def load_and_chunk(pdf_path, chunk_size=200, chunk_overlap=30):
+def load_and_chunk(pdf_path, chunk_size=600, chunk_overlap=100):
     doc = fitz.open(pdf_path)
 
     full_text = ""
