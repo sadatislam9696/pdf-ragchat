@@ -1,79 +1,193 @@
+
+/* মেইন অ্যাপ কন্টেইনার - মডার্ন চ্যাট কার্ড লুক */
 .app {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 64px 24px;
-  font-family: -apple-system, "Segoe UI", sans-serif;
+  max-width: 680px;
+  margin: 40px auto;
+  padding: 32px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
 }
 
-h1 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 2.25rem;
-  font-weight: 600;
+/* টাইটেল স্টাইলিং */
+.project-name {
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
   margin-bottom: 4px;
+  letter-spacing: -0.025em;
+  
+  /* মাঝখানে আনার জন্য ফ্লেক্সবক্স প্রপার্টি */
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  gap: 8px;
+}
+
+.project-name::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
 
 .tagline {
-  color: #6B6558;
+  color: #64748b;
+  font-size: 0.95rem;
   margin-top: 0;
+  margin-bottom: 24px;
+  
+  /* ট্যাগলাইন মাঝখানে আনার জন্য */
+  text-align: center; 
 }
 
+/* আপলোড রো ডিজাইন */
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  transition: all 0.2s ease;
+}
+
+.upload-row:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+/* ফাইল ইনপুট কাস্টমাইজেশন */
+.upload-row input[type="file"] {
+  font-size: 0.9rem;
+  color: #475569;
+  width: 100%;
+}
+
+.upload-row input[type="file"]::file-selector-button {
+  padding: 8px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #334155;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: background 0.2s;
+}
+
+.upload-row input[type="file"]::file-selector-button:hover {
+  background: #e2e8f0;
+}
+
+/* চ্যাট বা কোশ্চেন ইনপুট রো */
 .ask-row {
   display: flex;
-  gap: 8px;
-  margin-top: 32px;
+  gap: 10px;
+  margin-top: 16px;
+  background: #ffffff;
+  padding: 6px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.ask-row:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .ask-input {
   flex: 1;
-  padding: 12px 14px;
-  border: 1px solid #D8D2C2;
-  border-radius: 4px;
-  font-size: 1rem;
-  background: #fff;
-  color: #232019;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: #1e293b;
 }
 
 .ask-input:focus {
-  outline: 2px solid #3F5D4E;
-  outline-offset: 1px;
+  outline: none;
 }
 
+.ask-input::placeholder {
+  color: #94a3b8;
+}
+
+/* কমন বাটন স্টাইল */
 .ask-button {
-  padding: 12px 20px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 4px;
-  background: #3F5D4E;
-  color: #fff;
-  font-size: 1rem;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
 }
 
-.ask-button:disabled {
-  background: #A8AFA8;
-  cursor: not-allowed;
+.ask-button:active {
+  transform: scale(0.98);
 }
 
 .ask-button:hover:not(:disabled) {
-  background: #345042;
+  background: #1e293b;
 }
 
+.ask-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* স্ট্যাটাস মেসেজ */
 .status {
-  margin-top: 20px;
+  margin-top: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
 }
 
 .status-loading {
-  color: #6B6558;
+  color: #475569;
+  background: #f1f5f9;
+}
+
+.status-success {
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
 }
 
 .status-error {
-  color: #9C3B2E;
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
 }
 
+/* চ্যাটবটের উত্তর দেখানোর বক্স (AI Response Box) */
 .answer-box {
-  margin-top: 20px;
+  margin-top: 24px;
   padding: 20px;
-  background: #E4EBE4;
-  border-left: 3px solid #3F5D4E;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #3b82f6;
+  border-radius: 0 12px 12px 0;
   line-height: 1.6;
+  color: #334155;
+  font-size: 0.95rem;
   white-space: pre-wrap;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }

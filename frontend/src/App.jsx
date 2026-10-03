@@ -77,7 +77,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>PDF Chatbot</h1>
+      <h1 className="project-name">PDF  CHATBOT</h1>
       <p className="tagline">Upload a PDF, then ask questions about it.</p>
 
       <div className="upload-row">
