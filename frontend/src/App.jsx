@@ -69,11 +69,12 @@ function App() {
     setLoading(false)
   }
 
-  function handleKeyDown(e) {
-    if (e.key === 'Enter') {
-      handleAsk()
-    }
+ const handleKeyDown = (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    handleAsk();
   }
+};
 
   return (
     <div className="app">
@@ -93,13 +94,13 @@ function App() {
       {uploadStatus && <p className="status status-success">{uploadStatus}</p>}
 
       <div className="ask-row">
-        <input
-          type="text"
+        <textarea
           className="ask-input"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask a question about the document..."
+          rows={3}
         />
         <button className="ask-button" onClick={handleAsk} disabled={loading}>
           Ask
@@ -114,3 +115,5 @@ function App() {
 }
 
 export default App
+
+

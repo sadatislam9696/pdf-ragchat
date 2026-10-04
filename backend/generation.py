@@ -1,4 +1,6 @@
 import os
+import os
+import time
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -19,18 +21,32 @@ Rules:
 - When relevant, mention which source number your answer is based on.
 """
 
+MAX_ATTEMPTS = 4
+RETRY_CODES = {500, 503, 504}  # temporary server-side errors worth retrying
+
+
 def generate_answer(question, chunks):
     sources_text = "\n\n".join(
         f"[Source {i+1}]\n{chunk}" for i, chunk in enumerate(chunks)
     )
     user_message = f"{sources_text}\n\nQuestion: {question}"
 
-    response = client.models.generate_content(
-        model="gemini-flash-latest",
-        contents=user_message,
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_PROMPT,
-            max_output_tokens=1000,
-        ),
-    )
-    return response.text
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            response = client.models.generate_content(
+                model="gemini-flash-latest",
+                contents=user_message,
+                config=types.GenerateContentConfig(
+                    system_instruction=SYSTEM_PROMPT,
+                    max_output_tokens=1000,
+                ),
+            )
+            return response.text
+        except Exception as e:
+            code = getattr(e, "code", None)
+            if code in RETRY_CODES and attempt < MAX_ATTEMPTS:
+                wait = 2 ** attempt  # 2s, 4s, 8s
+                print(f"Gemini error {code} (attempt {attempt}/{MAX_ATTEMPTS}); retrying in {wait}s")
+                time.sleep(wait)
+                continue
+            raise

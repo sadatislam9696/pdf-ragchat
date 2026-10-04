@@ -111,10 +111,17 @@
   flex: 1;
   padding: 10px 14px;
   border: none;
+  min-height: 60px;
+  line-height: 2;
   background: transparent;
   font-size: 0.95rem;
   color: #1e293b;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
 }
+
+
 
 .ask-input:focus {
   outline: none;
