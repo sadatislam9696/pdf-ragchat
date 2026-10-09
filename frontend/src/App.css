@@ -1,15 +1,48 @@
-
 /* মেইন অ্যাপ কন্টেইনার - মডার্ন চ্যাট কার্ড লুক */
 .app {
   max-width: 680px;
   margin: 40px auto;
   padding: 32px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  
-  border: 1px solid #e2e8f0;
+  position: relative;
+
+  border: 1px solid var(--border);
   border-radius: 16px;
-  background-color: #ffffff;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: var(--toggle-bg);
+  color: var(--toggle-icon);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+  padding: 0;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.05);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* টাইটেল স্টাইলিং */
@@ -17,15 +50,15 @@
   font-family: inherit;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-primary);
   margin-bottom: 4px;
   letter-spacing: -0.025em;
-  
-  /* মাঝখানে আনার জন্য ফ্লেক্সবক্স প্রপার্টি */
+
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   gap: 8px;
+  transition: color 0.25s ease;
 }
 
 .project-name::before {
@@ -39,13 +72,12 @@
 }
 
 .tagline {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.95rem;
   margin-top: 0;
   margin-bottom: 24px;
-  
-  /* ট্যাগলাইন মাঝখানে আনার জন্য */
-  text-align: center; 
+  text-align: center;
+  transition: color 0.25s ease;
 }
 
 /* আপলোড রো ডিজাইন */
@@ -54,31 +86,31 @@
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
+  background: var(--bg-muted);
+  border: 1px dashed var(--border-dashed);
   border-radius: 10px;
   margin-bottom: 20px;
   transition: all 0.2s ease;
 }
 
 .upload-row:hover {
-  border-color: #94a3b8;
-  background: #f1f5f9;
+  border-color: var(--text-secondary);
+  background: var(--bg-muted-hover);
 }
 
 /* ফাইল ইনপুট কাস্টমাইজেশন */
 .upload-row input[type="file"] {
   font-size: 0.9rem;
-  color: #475569;
+  color: var(--text-file);
   width: 100%;
 }
 
 .upload-row input[type="file"]::file-selector-button {
   padding: 8px 14px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--file-btn-border);
   border-radius: 6px;
-  background: #ffffff;
-  color: #334155;
+  background: var(--file-btn-bg);
+  color: var(--file-btn-text);
   font-weight: 500;
   cursor: pointer;
   margin-right: 12px;
@@ -86,7 +118,7 @@
 }
 
 .upload-row input[type="file"]::file-selector-button:hover {
-  background: #e2e8f0;
+  background: var(--file-btn-hover);
 }
 
 /* চ্যাট বা কোশ্চেন ইনপুট রো */
@@ -94,17 +126,17 @@
   display: flex;
   gap: 10px;
   margin-top: 16px;
-  background: #ffffff;
+  background: var(--bg-card);
   padding: 6px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-dashed);
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--shadow-input);
   transition: all 0.2s ease;
 }
 
 .ask-row:focus-within {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  border-color: var(--focus-border);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .ask-input {
@@ -115,20 +147,18 @@
   line-height: 2;
   background: transparent;
   font-size: 0.95rem;
-  color: #1e293b;
+  color: var(--text-input);
   font-family: inherit;
   resize: vertical;
   box-sizing: border-box;
 }
-
-
 
 .ask-input:focus {
   outline: none;
 }
 
 .ask-input::placeholder {
-  color: #94a3b8;
+  color: var(--text-placeholder);
 }
 
 /* কমন বাটন স্টাইল */
@@ -136,12 +166,14 @@
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
-  background: #0f172a;
-  color: #ffffff;
+  background: var(--btn-bg);
+  color: var(--btn-text);
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
+  align-self: flex-end;
+  margin-bottom: 4px;
 }
 
 .ask-button:active {
@@ -149,11 +181,11 @@
 }
 
 .ask-button:hover:not(:disabled) {
-  background: #1e293b;
+  background: var(--btn-hover);
 }
 
 .ask-button:disabled {
-  background: #94a3b8;
+  background: var(--btn-disabled);
   cursor: not-allowed;
   transform: none;
 }
@@ -168,33 +200,41 @@
 }
 
 .status-loading {
-  color: #475569;
-  background: #f1f5f9;
+  color: var(--status-loading-text);
+  background: var(--status-loading-bg);
 }
 
 .status-success {
-  color: #065f46;
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
+  color: var(--status-success-text);
+  background: var(--status-success-bg);
+  border: 1px solid var(--status-success-border);
 }
 
 .status-error {
-  color: #991b1b;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  color: var(--status-error-text);
+  background: var(--status-error-bg);
+  border: 1px solid var(--status-error-border);
 }
 
 /* চ্যাটবটের উত্তর দেখানোর বক্স (AI Response Box) */
 .answer-box {
   margin-top: 24px;
   padding: 20px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-left: 4px solid #3b82f6;
+  background: var(--answer-bg);
+  border: 1px solid var(--answer-border);
+  border-left: 4px solid var(--answer-accent);
   border-radius: 0 12px 12px 0;
   line-height: 1.6;
-  color: #334155;
+  color: var(--answer-text);
   font-size: 0.95rem;
   white-space: pre-wrap;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--shadow-answer);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
+
+.answer-box p { margin: 0 0 12px; }
+.answer-box p:last-child { margin-bottom: 0; }
+.answer-box ul,
+.answer-box ol { margin: 0 0 12px; padding-left: 22px; }
+.answer-box li { margin-bottom: 4px; }
+.answer-box strong { font-weight: 600; }

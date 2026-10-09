@@ -5,3 +5,5 @@ chroma_db/
 
 # sample and test documents
 data/
+
+backend/frontend/node_modules/

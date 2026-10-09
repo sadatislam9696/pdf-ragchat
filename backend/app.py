@@ -46,7 +46,9 @@ async def upload_pdf(file: UploadFile = File(...)):
             shutil.copyfileobj(file.file, f)
 
         chunk_count = build_index(save_path)
-        return {"message": f"Successfully indexed {chunk_count} chunks from {file.filename}"}
+        print(f"Indexed {chunk_count} chunks from {file.filename}")
+        return {"message": f"{file.filename} uploaded successfully. You can now ask questions about it."}
+
     except Exception as e:
         print(f"Error processing upload: {e}")
         raise HTTPException(status_code=500, detail="Failed to process the uploaded PDF.")

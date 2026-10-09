@@ -1,5 +1,96 @@
+:root {
+  /* Light theme (default) */
+  --bg-page: #F7F4EC;
+  --bg-card: #ffffff;
+  --bg-muted: #f8fafc;
+  --bg-muted-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-dashed: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-body: #334155;
+  --text-input: #1e293b;
+  --text-placeholder: #94a3b8;
+  --text-file: #475569;
+  --btn-bg: #0f172a;
+  --btn-hover: #1e293b;
+  --btn-disabled: #94a3b8;
+  --btn-text: #ffffff;
+  --file-btn-bg: #ffffff;
+  --file-btn-border: #cbd5e1;
+  --file-btn-text: #334155;
+  --file-btn-hover: #e2e8f0;
+  --focus-ring: rgba(59, 130, 246, 0.15);
+  --focus-border: #3b82f6;
+  --status-loading-bg: #f1f5f9;
+  --status-loading-text: #475569;
+  --status-success-bg: #ecfdf5;
+  --status-success-text: #065f46;
+  --status-success-border: #a7f3d0;
+  --status-error-bg: #fef2f2;
+  --status-error-text: #991b1b;
+  --status-error-border: #fecaca;
+  --answer-bg: #f8fafc;
+  --answer-border: #e2e8f0;
+  --answer-accent: #3b82f6;
+  --answer-text: #334155;
+  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --shadow-input: 0 2px 4px rgba(0, 0, 0, 0.02);
+  --shadow-answer: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  --toggle-bg: #e2e8f0;
+  --toggle-icon: #64748b;
+}
+
+[data-theme="dark"] {
+  --bg-page: #0f172a;
+  --bg-card: #1e293b;
+  --bg-muted: #0f172a;
+  --bg-muted-hover: #1e293b;
+  --border: #334155;
+  --border-dashed: #475569;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-body: #cbd5e1;
+  --text-input: #e2e8f0;
+  --text-placeholder: #64748b;
+  --text-file: #94a3b8;
+  --btn-bg: #3b82f6;
+  --btn-hover: #2563eb;
+  --btn-disabled: #475569;
+  --btn-text: #ffffff;
+  --file-btn-bg: #334155;
+  --file-btn-border: #475569;
+  --file-btn-text: #e2e8f0;
+  --file-btn-hover: #475569;
+  --focus-ring: rgba(59, 130, 246, 0.3);
+  --focus-border: #60a5fa;
+  --status-loading-bg: #1e293b;
+  --status-loading-text: #94a3b8;
+  --status-success-bg: #064e3b;
+  --status-success-text: #6ee7b7;
+  --status-success-border: #065f46;
+  --status-error-bg: #450a0a;
+  --status-error-text: #fca5a5;
+  --status-error-border: #7f1d1d;
+  --answer-bg: #0f172a;
+  --answer-border: #334155;
+  --answer-accent: #60a5fa;
+  --answer-text: #cbd5e1;
+  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --shadow-input: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-answer: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --toggle-bg: #334155;
+  --toggle-icon: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  background: #F7F4EC;
-  color: #232019;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+  min-height: 100vh;
 }
