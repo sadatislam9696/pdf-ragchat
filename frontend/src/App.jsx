@@ -1,11 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 import ReactMarkdown from 'react-markdown'
 
-function getInitialTheme() {
-  const saved = localStorage.getItem('theme')
-  if (saved === 'dark' || saved === 'light') return saved
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const NETWORK_ERROR = 'Cannot connect to the server. Please check your connection and try again.'
+
+// Read a JSON body safely: an error response is not always valid JSON.
+async function readJson(response) {
+  try {
+    return await response.json()
+  } catch {
+    return {}
+  }
 }
 
 function App() {
@@ -18,17 +24,6 @@ function App() {
   const [uploadStatus, setUploadStatus] = useState('')
   const [uploading, setUploading] = useState(false)
 
-  const [theme, setTheme] = useState(getInitialTheme)
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('theme', theme)
-  }, [theme])
-
-  function toggleTheme() {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
-  }
-
   async function handleUpload() {
     if (!file || uploading) return
 
@@ -40,20 +35,21 @@ function App() {
     formData.append('file', file)
 
     try {
-      const response = await fetch('http://localhost:8000/upload', {
+      const response = await fetch(`${API_URL}/upload`, {
         method: 'POST',
         body: formData,
       })
 
-      const data = await response.json()
+      const data = await readJson(response)
 
       if (!response.ok) {
-        setError(data.detail || 'Upload failed.')
+        setError(data.detail || `Upload failed (error ${response.status}).`)
       } else {
         setUploadStatus(data.message)
       }
     } catch (err) {
-      setError('Could not reach the server. Is the backend running?')
+      console.error('Upload request failed:', err)
+      setError(NETWORK_ERROR)
     }
 
     setUploading(false)
@@ -67,21 +63,22 @@ function App() {
     setError('')
 
     try {
-      const response = await fetch('http://localhost:8000/ask', {
+      const response = await fetch(`${API_URL}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: question }),
       })
 
-      const data = await response.json()
+      const data = await readJson(response)
 
       if (!response.ok) {
-        setError(data.detail || 'Something went wrong.')
+        setError(data.detail || `Something went wrong (error ${response.status}).`)
       } else {
         setAnswer(data.answer)
       }
     } catch (err) {
-      setError('Could not reach the server. Is the backend running?')
+      console.error('Ask request failed:', err)
+      setError(NETWORK_ERROR)
     }
 
     setLoading(false)
@@ -96,33 +93,6 @@ function App() {
 
   return (
     <div className="app">
-      <button
-        className="theme-toggle"
-        onClick={toggleTheme}
-        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-        title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
-      >
-        {theme === 'dark' ? (
-          /* Sun icon */
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </svg>
-        ) : (
-          /* Moon icon */
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        )}
-      </button>
-
       <h1 className="project-name">PDF  CHATBOT</h1>
       <p className="tagline">Upload a PDF, then ask questions about it.</p>
 

@@ -48,7 +48,7 @@ def generate_answer(question, chunks):
                 contents=user_message,
                 config=types.GenerateContentConfig(
                     system_instruction=SYSTEM_PROMPT,
-                    max_output_tokens=1000,
+                    max_output_tokens=4096,
                 ),
             )
             return response.text
