@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import './App.css'
 import ReactMarkdown from 'react-markdown'
 
@@ -23,6 +23,9 @@ function App() {
   const [file, setFile] = useState(null)
   const [uploadStatus, setUploadStatus] = useState('')
   const [uploading, setUploading] = useState(false)
+
+  const abortRef = useRef(null)
+  const [copied, setCopied] = useState(false)
 
   async function handleUpload() {
     if (!file || uploading) return
@@ -58,6 +61,9 @@ function App() {
   async function handleAsk() {
     if (!question.trim() || loading) return
 
+    const controller = new AbortController()
+    abortRef.current = controller
+
     setLoading(true)
     setAnswer('')
     setError('')
@@ -67,9 +73,15 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: question }),
+        signal: controller.signal,
       })
 
       const data = await readJson(response)
+
+      // readJson swallows errors, so check for a cancel that happened while reading the body
+      if (controller.signal.aborted) {
+        throw new DOMException('Aborted', 'AbortError')
+      }
 
       if (!response.ok) {
         setError(data.detail || `Something went wrong (error ${response.status}).`)
@@ -77,11 +89,46 @@ function App() {
         setAnswer(data.answer)
       }
     } catch (err) {
-      console.error('Ask request failed:', err)
-      setError(NETWORK_ERROR)
+      if (err.name === 'AbortError') {
+        // Only show this for "Cancel waiting"; "Clear" detaches the request first
+        if (abortRef.current === controller) {
+          setError('Stopped waiting. The server may still finish processing the request.')
+        }
+      } else {
+        console.error('Ask request failed:', err)
+        setError(NETWORK_ERROR)
+      }
+    } finally {
+      if (abortRef.current === controller) {
+        abortRef.current = null
+      }
+      setLoading(false)
     }
+  }
 
-    setLoading(false)
+  function handleCancel() {
+    abortRef.current?.abort()
+  }
+
+  function handleClear() {
+    const controller = abortRef.current
+    abortRef.current = null
+    controller?.abort()
+    setQuestion('')
+    setAnswer('')
+    setError('')
+    setCopied(false)
+  }
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(answer)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Copy failed:', err)
+      setError('Could not copy to the clipboard.')
+    }
   }
 
   const handleKeyDown = (e) => {
@@ -122,11 +169,31 @@ function App() {
         </button>
       </div>
 
-      {loading && <p className="status status-loading">Thinking…</p>}
+      {(question || answer || error) && (
+        <div className="clear-row">
+          <button className="clear-button" onClick={handleClear}>
+            Clear
+          </button>
+        </div>
+      )}
+
+      {loading && (
+        <div className="status status-loading">
+          <span>Thinking…</span>
+          <button className="cancel-button" onClick={handleCancel}>
+            Cancel waiting
+          </button>
+        </div>
+      )}
       {error && <p className="status status-error">{error}</p>}
       {answer && (
-        <div className="answer-box">
-          <ReactMarkdown>{answer}</ReactMarkdown>
+        <div className="answer-wrap">
+          <div className="answer-box">
+            <ReactMarkdown>{answer}</ReactMarkdown>
+          </div>
+          <button className="copy-button" onClick={handleCopy}>
+            {copied ? 'Copied!' : 'Copy answer'}
+          </button>
         </div>
       )}
     </div>
